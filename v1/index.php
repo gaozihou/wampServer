@@ -239,6 +239,13 @@ $app->post('/login', function() use ($app) {
 /*
  * ------------------------ METHODS WITH AUTHENTICATION ------------------------
  */
+        
+$app->get('/serverTest', function() {
+            $response = array();
+            $response["error"] = false;
+            $response["message"] = "Server OK";
+            echoRespnse(200, $response);
+        });
              
 $app->get('/logout', 'authenticate', function() {
             global $user_id;
