@@ -10,6 +10,7 @@ $app = new \Slim\Slim();
 
 // User id from db - Global Variable
 $user_id = NULL;
+//This is really interesting                
 
 /**
  * Adding Middle Layer to authenticate every request
