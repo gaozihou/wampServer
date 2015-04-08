@@ -16,7 +16,7 @@ $user_id = NULL;
  * Adding Middle Layer to authenticate every request
  * Checking if the request has valid api key in the 'Authorization' header
  */
-function authenticate(\Slim\Route $route) {
+function authenticate(/*\Slim\Route $route*/) {
     // Getting request headers
     $headers = apache_request_headers();
     $response = array();
@@ -89,7 +89,7 @@ $app->post('/register', function() use ($app) {
             echoRespnse(201, $response);
         });
         
-$app->post('/upload', function() use ($app) {
+$app->post('/upload', function() {
     
             $array = array();
     
@@ -387,7 +387,7 @@ $app->put('/tasks/:id', 'authenticate', function($task_id) use($app) {
  * method DELETE
  * url /tasks
  */
-$app->delete('/tasks/:id', 'authenticate', function($task_id) use($app) {
+$app->delete('/tasks/:id', 'authenticate', function($task_id) {
             global $user_id;
 
             $db = new DbHandler();
@@ -411,10 +411,11 @@ $app->delete('/tasks/:id', 'authenticate', function($task_id) use($app) {
 function verifyRequiredParams($required_fields) {
     $error = false;
     $error_fields = "";
-    $request_params = array();
-    $request_params = $_REQUEST;
+    //$request_params = $_REQUEST;
+    $request_params = filter_input_array(\INPUT_POST);
     // Handling PUT request params
-    if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+    //if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+    if (filter_input_array(\INPUT_SERVER)['REQUEST_METHOD'] == 'PUT') {
         $app = \Slim\Slim::getInstance();
         parse_str($app->request()->getBody(), $request_params);
     }
@@ -467,4 +468,3 @@ function echoRespnse($status_code, $response) {
 }
 
 $app->run();
-?>
