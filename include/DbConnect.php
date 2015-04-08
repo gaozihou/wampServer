@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -34,4 +35,3 @@ class DbConnect {
 
 }
 
-?>
