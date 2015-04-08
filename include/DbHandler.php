@@ -75,7 +75,7 @@ class DbHandler {
         $stmt->bind_param("s", $email);
 
         $stmt->execute();
-
+        $password_hash = null;
         $stmt->bind_result($password_hash);
 
         $stmt->store_result();
@@ -154,6 +154,7 @@ class DbHandler {
         $stmt->bind_param("s", $email);
         if ($stmt->execute()) {
             // $user = $stmt->get_result()->fetch_assoc();
+            $name = null; $api_key = null; $status = null; $created_at = null;
             $stmt->bind_result($name, $email, $api_key, $status, $created_at);
             $stmt->fetch();
             $user = array();
@@ -179,6 +180,7 @@ class DbHandler {
         if ($stmt->execute()) {
             // $api_key = $stmt->get_result()->fetch_assoc();
             // TODO
+            $api_key = null;
             $stmt->bind_result($api_key);
             $stmt->close();
             return $api_key;
@@ -195,6 +197,7 @@ class DbHandler {
         $stmt = $this->conn->prepare("SELECT id FROM users WHERE api_key = ?");
         $stmt->bind_param("s", $api_key);
         if ($stmt->execute()) {
+            $user_id = null;
             $stmt->bind_result($user_id);
             $stmt->fetch();
             // TODO
@@ -387,5 +390,3 @@ class DbHandler {
     }
 
 }
-
-?>
