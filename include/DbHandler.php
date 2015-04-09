@@ -275,6 +275,18 @@ class DbHandler {
         }
     }
     
+    public function createUserPortrait($user_id, $file_name) {
+        $stmt = $this->conn->prepare("INSERT INTO portrait(user_id, portrait) VALUES('$user_id', '$file_name')");
+        $result = $stmt->execute();
+        $stmt->close();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * Fetching single task
      * @param String $task_id id of the task
