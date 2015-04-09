@@ -103,6 +103,20 @@ $app->post('/upload', function() {
             echoRespnse(201, $array);
         });
         
+$app->post('/uploadPortrait', function() {
+    
+            $array = array();
+    
+            $base_path = "./portrait/"; //接收文件目录  
+            $target_path = $base_path . basename ( $_FILES ['uploadfile'] ['name'] ); 
+            if (move_uploaded_file ( $_FILES ['uploadfile'] ['tmp_name'], $target_path )) {  
+                $array = array ("code" => "1", "message" => "Portrait uploaded successfully!" );  
+            } else {  
+                $array = array ("code" => "0", "message" => "There was an error uploading the portrait, please try again!" );  
+            }  
+            echoRespnse(201, $array);
+        });
+        
 $app->post('/taskImage', function() use ($app) {
 
             $response = array();
@@ -120,6 +134,28 @@ $app->post('/taskImage', function() use ($app) {
             } else {
                 $response["error"] = true;
                 $response["message"] = "Oops! TaskImage Failed to create";
+            }
+            // echo json response
+            echoRespnse(201, $response);
+        });
+        
+$app->post('/userPortrait', function() use ($app) {
+
+            $response = array();
+
+            // reading post params
+            $user_id = $app->request->post('user_id');
+            $file_name = $app->request->post('file_name');
+
+            $db = new DbHandler();
+            $res = $db->createUserPortrait($user_id, $file_name);
+
+            if ($res == true) {
+                $response["error"] = false;
+                $response["message"] = "UserPortrait created successfully";
+            } else {
+                $response["error"] = true;
+                $response["message"] = "Oops! UserPortrait Failed to create";
             }
             // echo json response
             echoRespnse(201, $response);
