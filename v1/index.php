@@ -139,12 +139,12 @@ $app->post('/taskImage', function() use ($app) {
             echoRespnse(201, $response);
         });
         
-$app->post('/userPortrait', function() use ($app) {
+$app->post('/userPortrait', 'authenticate', function() use ($app) {
 
+            global $user_id;
             $response = array();
 
             // reading post params
-            $user_id = $app->request->post('user_id');
             $file_name = $app->request->post('file_name');
 
             $db = new DbHandler();
@@ -254,6 +254,7 @@ $app->post('/login', function() use ($app) {
 
                 if ($user != NULL) {
                     $response["error"] = false;
+                    $response['user_id'] = $user['user_id'];
                     $response['name'] = $user['name'];
                     $response['email'] = $user['email'];
                     $response['apiKey'] = $user['api_key'];
@@ -295,6 +296,21 @@ $app->get('/logout', 'authenticate', function() {
             }else{
                 $response["error"] = true;
                 $response["message"] = "Oh something wrong happened...";
+            }
+            echoRespnse(200, $response);
+        });
+        
+$app->get('/getPortrait', 'authenticate', function() {
+            global $user_id;
+            //$response = array();
+            $db = new DbHandler();
+
+            // fetching all user tasks
+            $result = $db->getPortrait($user_id);
+            $response["error"] = true;
+            while ($single = $result->fetch_assoc()) {
+                $response["error"] = false;
+                $response["file_name"] = $single["portrait"];
             }
             echoRespnse(200, $response);
         });

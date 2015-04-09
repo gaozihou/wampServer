@@ -150,14 +150,15 @@ class DbHandler {
      * @param String $email User email id
      */
     public function getUserByEmail($email) {
-        $stmt = $this->conn->prepare("SELECT name, email, api_key, status, created_at FROM users WHERE email = ?");
+        $stmt = $this->conn->prepare("SELECT id, name, email, api_key, status, created_at FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         if ($stmt->execute()) {
             // $user = $stmt->get_result()->fetch_assoc();
-            $name = null; $api_key = null; $status = null; $created_at = null;
-            $stmt->bind_result($name, $email, $api_key, $status, $created_at);
+            $id = null; $name = null; $api_key = null; $status = null; $created_at = null;
+            $stmt->bind_result($id, $name, $email, $api_key, $status, $created_at);
             $stmt->fetch();
             $user = array();
+            $user["user_id"] = $id;
             $user["name"] = $name;
             $user["email"] = $email;
             $user["api_key"] = $api_key;
@@ -276,10 +277,21 @@ class DbHandler {
     }
     
     public function createUserPortrait($user_id, $file_name) {
-        $stmt = $this->conn->prepare("INSERT INTO portrait(user_id, portrait) VALUES('$user_id', '$file_name')");
-        $result = $stmt->execute();
+        
+        $stmt = $this->conn->prepare("SELECT user_id from portrait WHERE user_id = '$user_id'");
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
         $stmt->close();
-
+        if($num_rows > 0){
+            $stmt = $this->conn->prepare("UPDATE portrait p set p.portrait = '$file_name' WHERE p.user_id = '$user_id'");
+            $result = $stmt->execute();
+            $stmt->close();
+        }else{
+            $stmt = $this->conn->prepare("INSERT INTO portrait(user_id, portrait) VALUES('$user_id', '$file_name')");
+            $result = $stmt->execute();
+            $stmt->close();
+        }
         if ($result) {
             return true;
         } else {
@@ -324,6 +336,16 @@ class DbHandler {
         }else{
             return false;
         }
+    }
+    
+    public function getPortrait($user_id) {
+        $stmt = $this->conn->prepare("SELECT p.* FROM portrait p WHERE p.user_id = '$user_id'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        return $result;
+        
     }
 
     /**
