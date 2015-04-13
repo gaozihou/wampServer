@@ -264,18 +264,6 @@ class DbHandler {
         }
     }
     
-    public function createTaskImage($task_id, $file_name) {
-        $stmt = $this->conn->prepare("INSERT INTO images(task_id, image) VALUES('$task_id', '$file_name')");
-        $result = $stmt->execute();
-        $stmt->close();
-
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
     public function createUserPortrait($user_id, $file_name) {
         
         $stmt = $this->conn->prepare("SELECT user_id from portrait WHERE user_id = '$user_id'");
@@ -320,7 +308,8 @@ class DbHandler {
         
         if (!$this->isGCMUserExists($regId, $user_ID)){ 
             if ($this->isGCMDeviceChanged($regId, $user_ID)){ 
-                $stmt = $this->conn->prepare("UPDATE tblregistration t set t.registration_id = '$regId' WHERE t.user_id = '$user_ID'");
+                //$stmt = $this->conn->prepare("UPDATE tblregistration t set t.registration_id = '$regId' WHERE t.user_id = '$user_ID'");
+                $stmt = $this->conn->prepare("INSERT INTO tblregistration (registration_id, user_id) values ('$regId','$user_ID')");
                 $stmt->execute();
                 $stmt->close(); 
             } else if ($this->isGCMSwitchUser($regId, $user_ID)){
