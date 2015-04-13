@@ -117,28 +117,6 @@ $app->post('/uploadPortrait', function() {
             echoRespnse(201, $array);
         });
         
-$app->post('/taskImage', function() use ($app) {
-
-            $response = array();
-
-            // reading post params
-            $task_id = $app->request->post('task_id');
-            $file_name = $app->request->post('file_name');
-
-            $db = new DbHandler();
-            $res = $db->createTaskImage($task_id, $file_name);
-
-            if ($res == true) {
-                $response["error"] = false;
-                $response["message"] = "TaskImage created successfully";
-            } else {
-                $response["error"] = true;
-                $response["message"] = "Oops! TaskImage Failed to create";
-            }
-            // echo json response
-            echoRespnse(201, $response);
-        });
-        
 $app->post('/userPortrait', 'authenticate', function() use ($app) {
 
             global $user_id;
