@@ -240,9 +240,13 @@ class DbHandler {
      * @param String $user_id user id to whom task belongs to
      * @param String $task task text
      */
-    public function createTask($user_id, $task) {
-        $stmt = $this->conn->prepare("INSERT INTO tasks(task) VALUES(?)");
-        $stmt->bind_param("s", $task);
+    public function postItem($user_id, $name, $description, $condition_name,
+                    $category_name, $time_limit, $direct_buy_price, $current_price, 
+                    $image_file_name, $user_name) {
+        $stmt = $this->conn->prepare("INSERT INTO tasks(name, description, condition_name, category_name, time_limit, "
+                . "direct_buy_price, current_price, image_file_name, user_name, user_id) VALUES ('$name', '$description', '$condition_name', "
+                . "'$category_name', '$time_limit', '$direct_buy_price', '$current_price', "
+                . "'$image_file_name', '$user_name', '$user_id')");
         $result = $stmt->execute();
         $stmt->close();
 

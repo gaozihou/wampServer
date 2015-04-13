@@ -159,6 +159,7 @@ $app->post('/registerGCM', 'authenticate', function() use ($app)  {
             echoRespnse(201, $response);
         });
         
+//This is only for testing!!!
 $app->post('/pushMessages', function() use ($app) {
     
             $message = $app->request->post('message');
@@ -298,6 +299,7 @@ $app->get('/getPortrait', 'authenticate', function() {
  * method GET
  * url /tasks          
  */
+//TODO
 $app->get('/tasks', 'authenticate', function() {
             global $user_id;
             $response = array();
@@ -356,27 +358,37 @@ $app->get('/tasks/:id', 'authenticate', function($task_id) {
  * params - name
  * url - /tasks/
  */
-$app->post('/tasks', 'authenticate', function() use ($app) {
+$app->post('/postItem', 'authenticate', function() use ($app) {
             // check for required params
-            verifyRequiredParams(array('task'));
+            // verifyRequiredParams(array('task'));
 
             $response = array();
-            $task = $app->request->post('task');
+            $name = $app->request->post('name');
+            $description = $app->request->post('description');
+            $condition_name = $app->request->post('condition_name');
+            $category_name = $app->request->post('category_name');
+            $time_limit = $app->request->post('time_limit');
+            $direct_buy_price = $app->request->post('direct_buy_price');
+            $current_price = $app->request->post('current_price');
+            $image_file_name = $app->request->post('image_file_name');
+            $user_name = $app->request->post('user_name');
 
             global $user_id;
             $db = new DbHandler();
 
             // creating new task
-            $task_id = $db->createTask($user_id, $task);
+            $task_id = $db->postItem($user_id, $name, $description, $condition_name,
+                    $category_name, $time_limit, $direct_buy_price, $current_price, 
+                    $image_file_name, $user_name);
 
             if ($task_id != NULL) {
                 $response["error"] = false;
-                $response["message"] = "Task created successfully";
+                $response["message"] = "Item posted successfully";
                 $response["task_id"] = $task_id;
                 echoRespnse(201, $response);
             } else {
                 $response["error"] = true;
-                $response["message"] = "Failed to create task. Please try again";
+                $response["message"] = "Failed to post item. Please try again";
                 echoRespnse(200, $response);
             }            
         });
