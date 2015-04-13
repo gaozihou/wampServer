@@ -377,6 +377,22 @@ class DbHandler {
         return $tasks;
     }
     
+    public function getAllCondition() {
+        $stmt = $this->conn->prepare("SELECT * FROM `condition`");
+        $stmt->execute();
+        $tasks = $stmt->get_result();
+        $stmt->close();
+        return $tasks;
+    }
+    
+    public function getAllCategory() {
+        $stmt = $this->conn->prepare("SELECT * FROM `category`");
+        $stmt->execute();
+        $tasks = $stmt->get_result();
+        $stmt->close();
+        return $tasks;
+    }
+    
     public function getAllGCMIds() {
         $stmt = $this->conn->prepare("SELECT * FROM tblregistration");
         $stmt->execute();
