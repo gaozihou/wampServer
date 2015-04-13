@@ -88,6 +88,49 @@ $app->post('/register', function() use ($app) {
             // echo json response
             echoRespnse(201, $response);
         });
+
+        
+ $app->post('/searchItems', function() use ($app) {
+  
+            $response = array();
+            $db = new DbHandler();
+           
+            
+            $status = $app->request()->post('status');
+            $category = $app->request()->post('category');
+            $keywords = $app->request()->post('keywords');
+            
+            
+            
+            
+
+            // fetching all user tasks
+            $result = $db->getTargrtTasks($status, $category, $keywords);
+
+            $response["error"] = false;
+            $response["tasks"] = array();
+
+            // looping through result and preparing tasks array
+            while ($task = $result->fetch_assoc()) {
+                $tmp = array();
+                $tmp["id"] = $task["id"];
+                $tmp["name"] = $task["name"];
+                $tmp["status"] = $task["status"];
+                $tmp["createdAt"] = $task["created_at"];
+                $tmp["description"] = $task["description"];
+                $tmp["conditionName"] = $task["condition_name"];
+                $tmp["categoryName"] = $task["category_name"];
+                $tmp["timeLimit"] = $task["time_limit"];
+                $tmp["directBuyPrice"] = $task["direct_buy_price"];
+                $tmp["currentPrice"] = $task["current_price"];
+                $tmp["imageFileName"] = $task["image_file_name"];
+                $tmp["userName"] = $task["user_name"];
+                $tmp["userID"] = $task["user_id"];
+                array_push($response["tasks"], $tmp);
+            }
+
+            echoRespnse(200, $response);
+        });   
         
 $app->post('/upload', function() {
     
@@ -323,6 +366,7 @@ $app->get('/tasks', 'authenticate', function() {
 
             echoRespnse(200, $response);
         });
+    
 
 /**
  * Listing single task of particual user

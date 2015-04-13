@@ -306,6 +306,29 @@ class DbHandler {
             return NULL;
         }
     }
+    
+    public function getTargrtTasks($status, $category, $keywords) {
+        
+        $prepare = "SELECT * from tasks WHERE id is not null";
+        if($status != NULL){
+            $prepare += " and status = '$status'";
+        }
+        if($category != NULL){
+            $prepare += " and category = '$category'";
+        }
+        if($keywords != NULL){
+            $prepare += " and keyword like '%$keywords%'";
+        }
+        $stmt = $this->conn->prepare($prepare);
+         
+        if ($stmt->execute()) {
+            $task = $stmt->get_result();
+            $stmt->close();
+            return $task;
+        } else {
+            return NULL;
+        }
+    }
  
     
     public function registerGCM($regId, $user_ID) {
