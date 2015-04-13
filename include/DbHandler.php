@@ -307,7 +307,7 @@ class DbHandler {
         }
     }
     
-    public function getTargrtTasks($status, $category, $keywords) {
+    public function getTargrtTasks($status, $category, $keywords, $order) {
         
         $prepare = "SELECT * from tasks WHERE id is not null";
         if($status != NULL){
@@ -319,6 +319,19 @@ class DbHandler {
         if($keywords != NULL){
             $prepare = $prepare . " and name like '%$keywords%'";
         }
+        
+        if($order == 0){
+             $prepare = $prepare . " order by current_price asc";
+        }
+         if($order == 1){
+             $prepare = $prepare . " order by current_price desc";
+        }
+         if($status==0&&$order == 2){
+             $prepare = $prepare . " order by category_name asc";
+        }
+        if($status==0&&$order == 3){
+             $prepare = $prepare . " order by category_name desc";
+        }
         $stmt = $this->conn->prepare($prepare);
          
         if ($stmt->execute()) {
@@ -328,6 +341,47 @@ class DbHandler {
         } else {
             return NULL;
         }
+    }
+    public function getUserItem($user_id, $status, $identity){
+        
+        if($identity == '0'){
+        
+        $prepare = "SELECT t.* from tasks t,  WHERE user_tasks ut WHERE t.id = ut.task_id and ut.user_id = '$user_id'";
+        
+        if($status != NULL){
+            $prepare = $prepare . " and t.status = '$status'";
+        }
+        }
+        if($identity == '1'){
+        
+        $prepare = "SELECT t.* from tasks t,  WHERE user_buy ub WHERE t.id = ub.task_id and ut.user_id = '$user_id'";
+        
+        if($status != NULL){
+            $prepare = $prepare . " and t.status = '$status'";
+        }
+        }
+         if($order == 0){
+             $prepare = $prepare . " order by current_price asc";
+        }
+         if($order == 1){
+             $prepare = $prepare . " order by current_price desc";
+        }
+         if($status==0&&$order == 2){
+             $prepare = $prepare . " order by category_name asc";
+        }
+        if($status==0&&$order == 3){
+             $prepare = $prepare . " order by category_name desc";
+        }
+        $stmt = $this->conn->prepare($prepare);
+         
+        if ($stmt->execute()) {
+            $task = $stmt->get_result();
+            $stmt->close();
+            return $task;
+        } else {
+            return NULL;
+        }
+        
     }
  
     
