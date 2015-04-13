@@ -323,6 +323,30 @@ $app->get('/tasks', 'authenticate', function() {
 
             echoRespnse(200, $response);
         });
+        
+$app->get('/conditionAndCategory', function() {
+            $response = array();
+            $db = new DbHandler();
+
+            // fetching all user tasks
+            $resultCondition = $db->getAllCondition();
+            $resultCategory = $db->getAllCategory();
+
+            $response["error"] = false;
+            $response["condition"] = array();
+            $response["category"] = array();
+
+            // looping through result and preparing tasks array
+            while ($single = $resultCondition->fetch_assoc()) {
+                array_push($response["condition"], $single);
+            }
+            
+            while ($single = $resultCategory->fetch_assoc()) {
+                array_push($response["category"], $single);
+            }
+
+            echoRespnse(200, $response);
+        });
 
 /**
  * Listing single task of particual user
