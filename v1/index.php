@@ -103,8 +103,6 @@ $app->post('/register', function() use ($app) {
             
             
             
-            
-
             // fetching all user tasks
             $result = $db->getTargrtTasks($status, $category, $keywords, $order);
 
@@ -114,7 +112,7 @@ $app->post('/register', function() use ($app) {
             // looping through result and preparing tasks array
             while ($task = $result->fetch_assoc()) {
                 $tmp = array();
-                $tmp["id"] = $task["id"];
+                //$tmp["id"] = $task["id"];
                 $tmp["name"] = $task["name"];
                 $tmp["status"] = $task["status"];
                 $tmp["createdAt"] = $task["created_at"];
@@ -468,8 +466,9 @@ $app->post('/itemsByUser', 'authenticate', function() use($app) {
 
         $status = $app->request()->post('status');
         $identity = $app->request()->post('identity');
+        $order = $app->request()->post('order');
         
-        $result = getUserItem($user_id, $status, $identity);
+        $result = $db->getUserItem($user_id, $status, $identity, $order);
 
             $response["error"] = false;
             $response["tasks"] = array();
@@ -477,7 +476,7 @@ $app->post('/itemsByUser', 'authenticate', function() use($app) {
             // looping through result and preparing tasks array
             while ($task = $result->fetch_assoc()) {
                 $tmp = array();
-                $tmp["id"] = $task["id"];
+                //$tmp["id"] = $task["id"];
                 $tmp["name"] = $task["name"];
                 $tmp["status"] = $task["status"];
                 $tmp["createdAt"] = $task["created_at"];

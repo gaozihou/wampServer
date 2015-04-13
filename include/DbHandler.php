@@ -342,19 +342,19 @@ class DbHandler {
             return NULL;
         }
     }
-    public function getUserItem($user_id, $status, $identity){
+    public function getUserItem($user_id, $status, $identity, $order){
         
-        if($identity == '0'){
+        if($identity == 0){
         
-        $prepare = "SELECT t.* from tasks t,  WHERE user_tasks ut WHERE t.id = ut.task_id and ut.user_id = '$user_id'";
+        $prepare = "SELECT t.* from tasks t, user_tasks ut WHERE t.id = ut.task_id and ut.user_id = '$user_id'";
         
         if($status != NULL){
             $prepare = $prepare . " and t.status = '$status'";
         }
         }
-        if($identity == '1'){
+        if($identity == 1){
         
-        $prepare = "SELECT t.* from tasks t,  WHERE user_buy ub WHERE t.id = ub.task_id and ut.user_id = '$user_id'";
+        $prepare = "SELECT t.* from tasks t, user_buy ub WHERE t.id = ub.task_id and ub.user_id = '$user_id'";
         
         if($status != NULL){
             $prepare = $prepare . " and t.status = '$status'";
