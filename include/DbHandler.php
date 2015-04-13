@@ -311,13 +311,13 @@ class DbHandler {
         
         $prepare = "SELECT * from tasks WHERE id is not null";
         if($status != NULL){
-            $prepare += " and status = '$status'";
+            $prepare = $prepare . " and status = '$status'";
         }
         if($category != NULL){
-            $prepare += " and category = '$category'";
+            $prepare = $prepare . " and category_name = '$category'";
         }
         if($keywords != NULL){
-            $prepare += " and keyword like '%$keywords%'";
+            $prepare = $prepare . " and name like '%$keywords%'";
         }
         $stmt = $this->conn->prepare($prepare);
          
