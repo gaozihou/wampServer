@@ -243,10 +243,15 @@ class DbHandler {
     public function postItem($user_id, $name, $description, $condition_name,
                     $category_name, $time_limit, $direct_buy_price, $current_price, 
                     $image_file_name, $user_name) {
+        
+        //For calculating the create time and end time
+        $now_time = time();
+        $end_time = $now_time + (int)$time_limit;
+        
         $stmt = $this->conn->prepare("INSERT INTO tasks(name, description, condition_name, category_name, time_limit, "
-                . "direct_buy_price, current_price, image_file_name, user_name, user_id) VALUES ('$name', '$description', '$condition_name', "
+                . "direct_buy_price, current_price, image_file_name, user_name, user_id, create_time, end_time) VALUES ('$name', '$description', '$condition_name', "
                 . "'$category_name', '$time_limit', '$direct_buy_price', '$current_price', "
-                . "'$image_file_name', '$user_name', '$user_id')");
+                . "'$image_file_name', '$user_name', '$user_id', '$now_time', '$end_time')");
         $result = $stmt->execute();
         $stmt->close();
 
@@ -323,14 +328,14 @@ class DbHandler {
         if($order == 0){
              $prepare = $prepare . " order by current_price asc";
         }
-         if($order == 1){
+        if($order == 1){
              $prepare = $prepare . " order by current_price desc";
         }
-         if($status==0&&$order == 2){
-             $prepare = $prepare . " order by category_name asc";
+        if($status==0&&$order == 2){
+             $prepare = $prepare . " order by end_time asc";
         }
         if($status==0&&$order == 3){
-             $prepare = $prepare . " order by category_name desc";
+             $prepare = $prepare . " order by end_time desc";
         }
         $stmt = $this->conn->prepare($prepare);
          

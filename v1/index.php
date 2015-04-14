@@ -112,7 +112,7 @@ $app->post('/register', function() use ($app) {
             // looping through result and preparing tasks array
             while ($task = $result->fetch_assoc()) {
                 $tmp = array();
-                //$tmp["id"] = $task["id"];
+                $tmp["id"] = $task["id"];
                 $tmp["name"] = $task["name"];
                 $tmp["status"] = $task["status"];
                 $tmp["createdAt"] = $task["created_at"];
@@ -476,7 +476,7 @@ $app->post('/itemsByUser', 'authenticate', function() use($app) {
             // looping through result and preparing tasks array
             while ($task = $result->fetch_assoc()) {
                 $tmp = array();
-                //$tmp["id"] = $task["id"];
+                $tmp["id"] = $task["id"];
                 $tmp["name"] = $task["name"];
                 $tmp["status"] = $task["status"];
                 $tmp["createdAt"] = $task["created_at"];

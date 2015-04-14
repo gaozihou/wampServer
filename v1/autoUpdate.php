@@ -51,7 +51,9 @@ curl_close($ch);
  
 */
 
-file_put_contents('C:\wamp\www\task_manager\v1\1.txt','ok');
+$currentTime = time();
+
+file_put_contents('C:\wamp\www\task_manager\v1\1.txt',$currentTime);
           
 ?>
                 
