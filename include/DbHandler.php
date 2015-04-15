@@ -412,6 +412,25 @@ class DbHandler {
             return false;
         }
     }
+    public function getSingleUser($user_id){
+        $stmt = $this->conn->prepare("SELECT u.phone_number, u.email, p.portrait from users u, portrait p WHERE u.id = '$user_id' and p.user_id = '$user_id'");
+        $stmt->execute();
+        $user= $stmt->get_result();
+        $stmt->close();
+        return $user;
+        
+    }
+    public function getSingleItem($task_id){
+        $stmt = $this->conn->prepare("SELECT * from tasks WHERE id = '$task_id'");
+        $stmt->execute();
+        $tasks = $stmt->get_result();
+        $stmt->close();
+        return $tasks;
+        
+        
+        
+        
+    }
     
     public function getPortrait($user_id) {
         $stmt = $this->conn->prepare("SELECT p.* FROM portrait p WHERE p.user_id = '$user_id'");

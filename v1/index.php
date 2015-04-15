@@ -201,6 +201,70 @@ $app->post('/registerGCM', 'authenticate', function() use ($app)  {
             // echo json response
             echoRespnse(201, $response);
         });
+
+$app->post('/getSingleUser',function() use($app){
+            $response = array();
+            $db = new DbHandler();
+           
+            
+            $user_id = $app->request()->post('user_id');
+                   
+            // fetching all user tasks
+            $result = $db->getSingleUser($user_id);
+
+            $response["error"] = false;
+            
+            if($user = $result->fetch_assoc()){
+            
+            $response["phoneNumber"] = $user["phone_number"];
+            $response["email"] = $user["email"];
+            $response["portrait"] = $user["portrait"];
+            }
+            
+            echoRespnse(200, $response);
+            
+    
+});
+        
+$app->post('/getSingleItem',function() use($app){
+            $response = array();
+            $db = new DbHandler();
+           
+            
+            $task_id = $app->request()->post('task_id');
+                   
+            // fetching all user tasks
+            $result = $db->getSingleItem($task_id);
+
+            // looping through result and preparing tasks array
+            $response["error"] = false;
+            $response["tasks"] = array();
+
+            // looping through result and preparing tasks array
+            while ($task = $result->fetch_assoc()) {
+                $tmp = array();
+                $tmp["id"] = $task["id"];
+                $tmp["name"] = $task["name"];
+                $tmp["status"] = $task["status"];
+                $tmp["createdAt"] = $task["created_at"];
+                $tmp["description"] = $task["description"];
+                $tmp["conditionName"] = $task["condition_name"];
+                $tmp["categoryName"] = $task["category_name"];
+                $tmp["timeLimit"] = $task["time_limit"];
+                $tmp["directBuyPrice"] = $task["direct_buy_price"];
+                $tmp["currentPrice"] = $task["current_price"];
+                $tmp["imageFileName"] = $task["image_file_name"];
+                $tmp["userName"] = $task["user_name"];
+                $tmp["userID"] = $task["user_id"];
+                $tmp["timeLeft"] = $task["end_time"] - time();
+                array_push($response["tasks"], $tmp);
+            }
+              
+            
+
+            echoRespnse(200, $response);
+    
+});
         
 //This is only for testing!!!
 $app->post('/pushMessages', function() use ($app) {
