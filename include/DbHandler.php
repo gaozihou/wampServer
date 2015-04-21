@@ -551,7 +551,8 @@ class DbHandler {
         if ($user_name == NULL){
             return FALSE;
         }
-        $stmt = $this->conn->prepare("UPDATE tasks SET buyer_name = '$user_name', buyer_id = '$user_id', current_price = '$buy_price', status = 1 WHERE id = '$item_id' AND status = 0");
+        $current_time = time();
+        $stmt = $this->conn->prepare("UPDATE tasks SET buyer_name = '$user_name', buyer_id = '$user_id', current_price = '$buy_price', status = 1, end_time = '$current_time' WHERE id = '$item_id' AND status = 0");
         $result = $stmt->execute();
         $stmt->close();
         

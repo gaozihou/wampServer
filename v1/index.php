@@ -372,7 +372,7 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             $response = array();
             $db = new DbHandler();
             
-            $bid_price = $app->request()->post('bidPrice');
+            $bid_price = $app->request()->post('bid_price');
             $item_id = $app->request()->post('item_id');
 
             $result = $db->updatePrice($user_id,$bid_price,$item_id);
