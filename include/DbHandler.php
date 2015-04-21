@@ -331,11 +331,11 @@ class DbHandler {
     }
     
     public function getSpecificUserBuy($task_id){
-        $stmt = $this->conn->prepare("SELECT * from user_buy WHERE t.task_id = 'task_id'");
+        $stmt = $this->conn->prepare("SELECT * from user_buy WHERE t.task_id = '$task_id'");
         if ($stmt->execute()) {
-            $task = $stmt->get_result();
+            $users = $stmt->get_result();
             $stmt->close();
-            return $task;
+            return $users;
         } else {
             return NULL;
         }        
