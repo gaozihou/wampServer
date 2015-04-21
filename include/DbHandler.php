@@ -523,7 +523,7 @@ class DbHandler {
         $stmt->close();
         
         if($result){
-            $bid_result = placeBid($user_id,$bid_price,$item_id,$this);
+            $bid_result = DbHandler::placeBid($user_id,$bid_price,$item_id,$this);
             
             return $bid_result;
             
