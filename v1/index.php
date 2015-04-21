@@ -385,6 +385,28 @@ $app->get('/logout', 'authenticate', function() {
             }
             echoRespnse(200, $response);
         });
+ 
+$app->post('/placeBid', 'authenticate', function() use ($app) {
+            global $user_id;
+            $response = array();
+            $db = new DbHandler();
+            
+            $bid_price = $app->request()->post('bidPrice');
+            $item_id = $app->request()->post('item_id');
+
+            $result = $db->updatePrice($user_id,$bid_price,$item_id);
+
+            if ($result) {
+                $response["error"] = false;
+                $response["message"] = "Item bidded successfully";
+                echoRespnse(201, $response);
+            } else {
+                $response["error"] = true;
+                $response["message"] = "Failed to place bid. Please try again";
+                echoRespnse(200, $response);
+            }            
+
+        });
         
 $app->get('/getPortrait', 'authenticate', function() {
             global $user_id;

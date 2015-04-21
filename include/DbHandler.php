@@ -478,8 +478,45 @@ class DbHandler {
         $stmt->close();
         return $ids;
     }
-
-    /**
+       
+    public function placeBid($user_id,$bid_price,$item_id){
+        $stmt = $this->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price) VALUES ('$user_id', '$item_id', '$bid_price'");
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+        
+    }
+    
+    public function updatePrice($user_id,$bid_price,$item_id){
+        $user_name = findUserName($user_id);
+        if ($user_name == NULL){
+            return FALSE;
+        }
+        $stmt = $this->conn->prepare("UPDATE tasks SET buyer_name = '$user_name', buyer_id = '$user_id', current_price = '$bid_price' WHERE id = '$item_id'");
+        $result = $stmt->execute();
+        $stmt->close();
+        
+        if($result){
+            $bid_result = placeBid($user_id,$bid_price,$item_id);
+            
+            return $bid_result;
+            
+            
+        }
+        
+        return $result;
+      
+    }
+    
+     public function findUserName($user_id){
+        $stmt = $this->conn->prepare("SELECT name FROM users WHERE id = '$user_id' ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result;
+         
+     }
+     /**
      * Updating task
      * @param String $task_id id of the task
      * @param String $task task text
