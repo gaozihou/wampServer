@@ -369,7 +369,7 @@ class DbHandler {
         
         if($identity == 0){
         
-        $prepare = "SELECT t.* from tasks t, user_tasks ut WHERE t.id = ut.task_id and ut.user_id = '$user_id'";
+        $prepare = "SELECT distinct t.* from tasks t, user_tasks ut WHERE t.id = ut.task_id and ut.user_id = '$user_id'";
         
         if($status != NULL){
             $prepare = $prepare . " and t.status = '$status'";
@@ -377,7 +377,7 @@ class DbHandler {
         }
         if($identity == 1){
         
-        $prepare = "SELECT t.* from tasks t, user_buy ub WHERE t.id = ub.task_id and ub.user_id = '$user_id'";
+        $prepare = "SELECT distinct t.* from tasks t, user_buy ub WHERE t.id = ub.task_id and ub.user_id = '$user_id'";
         
         if($status != NULL){
             $prepare = $prepare . " and t.status = '$status'";
@@ -514,7 +514,7 @@ class DbHandler {
     }
     
     public function updatePrice($user_id,$bid_price,$item_id){
-        $user_name = DbHandler::findUserName($user_id, $this);
+        $user_name = DbHandler::findUserName($user_id, $this)["name"];
         if ($user_name == NULL){
             return FALSE;
         }
@@ -535,11 +535,12 @@ class DbHandler {
     }
     
     static public function findUserName($user_id, $that){
+
         $stmt = $that->conn->prepare("SELECT name FROM users WHERE id = '$user_id' ");
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
-        return $result;
+        return $result->fetch_assoc();
          
      }
      /**
