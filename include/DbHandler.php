@@ -324,10 +324,21 @@ class DbHandler {
         }
     }
     
-    public function setBidFailed($task_id){
+    public function setBidFinished($task_id){
         $stmt = $this->conn->prepare("UPDATE tasks t set t.status = 1 WHERE t.id = '$task_id'");
         $stmt->execute();
         $stmt->close();
+    }
+    
+    public function getSpecificUserBuy($task_id){
+        $stmt = $this->conn->prepare("SELECT * from user_buy WHERE t.task_id = 'task_id'");
+        if ($stmt->execute()) {
+            $task = $stmt->get_result();
+            $stmt->close();
+            return $task;
+        } else {
+            return NULL;
+        }        
     }
     
     public function getTargrtTasks($status, $category, $keywords, $order) {

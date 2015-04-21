@@ -7,10 +7,11 @@ $result = $db -> getEndedActiveTesk();
 if($result != NULL){
     while($tmp = $result -> fetch_assoc()){
         if($tmp["buyer_id"] == NULL){
-            $db -> setBidFailed($tmp["id"]);
+            $db -> setBidFinished($tmp["id"]);
             pushMessageToSingleUser("Your item: ".$tmp["name"]." times out, no body buy it. Please try again!", $tmp["user_id"]);
         }else{
-            //setBidSucceeded($tmp["id"]);
+            $db -> setBidFinished($tmp["id"]);
+            
         }
     }
 }
