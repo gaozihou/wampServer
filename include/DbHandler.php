@@ -534,9 +534,30 @@ class DbHandler {
         $stmt->close();
         
         if($result){
-            $bid_result = placeBid($user_id,$bid_price,$item_id,$this);
+            $bid_result = DbHandler::placeBid($user_id,$bid_price,$item_id,$this);
             
             return $bid_result;
+            
+            
+        }
+        
+        return $result;
+      
+    }
+    
+    public function directBuy($user_id,$buy_price,$item_id){
+        $user_name = DbHandler::findUserName($user_id, $this)["name"];
+        if ($user_name == NULL){
+            return FALSE;
+        }
+        $stmt = $this->conn->prepare("UPDATE tasks SET buyer_name = '$user_name', buyer_id = '$user_id', current_price = '$buy_price' status = 1 WHERE id = '$item_id' AND status = 0");
+        $result = $stmt->execute();
+        $stmt->close();
+        
+        if($result){
+            $buy_result = DbHandler::placeBid($user_id,$buy_price,$item_id,$this);
+            
+            return $buy_result;
             
             
         }

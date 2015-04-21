@@ -343,6 +343,29 @@ $app->get('/logout', 'authenticate', function() {
             }
             echoRespnse(200, $response);
         });
+        
+        
+$app->post('/directBuy', 'authenticate', function() use ($app) {
+            global $user_id;
+            $response = array();
+            $db = new DbHandler();
+            
+            $buy_price = $app->request()->post('buy_price');
+            $item_id = $app->request()->post('item_id');
+
+            $result = $db->directBuy($user_id,$buy_price,$item_id);
+
+            if ($result) {
+                $response["error"] = false;
+                $response["message"] = "Item bought successfully";
+                echoRespnse(201, $response);
+            } else {
+                $response["error"] = true;
+                $response["message"] = "Failed to buy the item. Please try again";
+                echoRespnse(200, $response);
+            }            
+
+        });
  
 $app->post('/placeBid', 'authenticate', function() use ($app) {
             global $user_id;
