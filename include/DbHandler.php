@@ -545,6 +545,19 @@ class DbHandler {
       
     }
     
+    public function validateBuyer($user_id,$item_id){
+        $stmt = $this->conn->prepare("SELECT user_id FROM tasks WHERE id = '$item_id'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $owner_id = $result->fetch_assoc()["user_id"];
+        $stmt->close();
+        if($owner_id == $user_id){
+            return FALSE;
+        }
+        return TRUE;
+        
+    }
+    
     public function directBuy($user_id,$buy_price,$item_id){
         $user_name = DbHandler::findUserName($user_id, $this)["name"];
         if ($user_name == NULL){

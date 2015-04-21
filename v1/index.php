@@ -352,6 +352,13 @@ $app->post('/directBuy', 'authenticate', function() use ($app) {
             
             $buy_price = $app->request()->post('buy_price');
             $item_id = $app->request()->post('item_id');
+            
+                if(!$db->validateBuyer($user_id,$item_id)){
+                $response["error"] = true;
+                $response["message"] = "You can't buy item posted by yourself!";
+                echoRespnse(200, $response);
+                
+            }
 
             $result = $db->directBuy($user_id,$buy_price,$item_id);
 
@@ -372,8 +379,16 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             $response = array();
             $db = new DbHandler();
             
+            
             $bid_price = $app->request()->post('bid_price');
             $item_id = $app->request()->post('item_id');
+            
+            if(!$db->validateBuyer($user_id,$item_id)){
+                $response["error"] = true;
+                $response["message"] = "You can't buy item posted by yourself!";
+                echoRespnse(200, $response);
+                
+            }
 
             $result = $db->updatePrice($user_id,$bid_price,$item_id);
 
