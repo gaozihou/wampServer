@@ -269,7 +269,7 @@ $app->post('/getSingleItem',function() use($app){
 //This is only for testing!!!
 $app->post('/pushMessages', function() use ($app) {
             
-            $googleResult = pushMessageToAllUsers("hehe");
+            $googleResult = pushMessageToAllUsers("This is the new way to post the notification. OH MY GOD WHY THERE IS STILL BUG HERE!");
             // echo json response
             echoRespnse(201, $googleResult);
                 
