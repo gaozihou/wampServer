@@ -580,6 +580,8 @@ $app->post('/itemsByUser', 'authenticate', function() use($app) {
                 $tmp["imageFileName"] = $task["image_file_name"];
                 $tmp["userName"] = $task["user_name"];
                 $tmp["userID"] = $task["user_id"];
+                $tmp["buyerName"] = $task["buyer_name"];
+                $tmp["buyerID"] = $task["buyerID"];
                 $tmp["timeLeft"] = $task["end_time"] - time();
                 array_push($response["tasks"], $tmp);
             }
