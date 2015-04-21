@@ -10,9 +10,9 @@ if($result != NULL){
             $db -> setBidFinished($tmp["id"]);
             pushMessageToSingleUser("Your item: ".$tmp["name"]." times out, no body buy it. Please try again!", $tmp["user_id"]);
         }else{
-            $db -> setBidFinished($tmp["id"]);
-            $usersRelated = $db ->getSpecificUserBuy($tmp["id"]);
+            $db -> setBidFinished($tmp["id"]);            
             pushMessageToSingleUser("Your item: ".$tmp["name"]." successhully sold with price of ".$tmp["current_price"], $tmp["user_id"]);
+            $usersRelated = $db ->getSpecificUserBuy($tmp["id"]);
             while($tmpUser = $usersRelated -> fetch_assoc()){
                 pushMessageToSingleUser("Item: ".$tmp["name"]." is sold out to buyer ".$tmp["buyer_name"]." with price of ".$tmp["current_price"].", click to see detail", $tmpUser["user_id"]);
             }
