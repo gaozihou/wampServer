@@ -359,7 +359,7 @@ $app->post('/directBuy', 'authenticate', function() use ($app) {
                 echoRespnse(200, $response);
                 
             }
-
+            else{
             $result = $db->directBuy($user_id,$buy_price,$item_id);
 
             if ($result) {
@@ -370,7 +370,8 @@ $app->post('/directBuy', 'authenticate', function() use ($app) {
                 $response["error"] = true;
                 $response["message"] = "Failed to buy the item. Please try again";
                 echoRespnse(200, $response);
-            }            
+            }        
+            }
 
         });
  
@@ -389,6 +390,8 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
                 echoRespnse(200, $response);
                 
             }
+            
+            else{
 
             $result = $db->updatePrice($user_id,$bid_price,$item_id);
 
@@ -400,7 +403,8 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
                 $response["error"] = true;
                 $response["message"] = "Failed to place bid. Please try again";
                 echoRespnse(200, $response);
-            }            
+            }      
+            }
 
         });
         
