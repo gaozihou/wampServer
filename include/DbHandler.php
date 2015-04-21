@@ -478,6 +478,14 @@ class DbHandler {
         $stmt->close();
         return $ids;
     }
+    
+    public function getUserGCMId($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM tblregistration WHERE user_id = '$id'");
+        $stmt->execute();
+        $ids = $stmt->get_result();
+        $stmt->close();
+        return $ids;
+    }
        
     public function placeBid($user_id,$bid_price,$item_id){
         $stmt = $this->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price) VALUES ('$user_id', '$item_id', '$bid_price'");
