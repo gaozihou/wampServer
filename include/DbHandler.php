@@ -505,8 +505,8 @@ class DbHandler {
         return $ids;
     }
        
-    public function placeBid($user_id,$bid_price,$item_id){
-        $stmt = $this->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price) VALUES ('$user_id', '$item_id', '$bid_price'");
+    static public function placeBid($user_id,$bid_price,$item_id,$that){
+        $stmt = $that->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price) VALUES ('$user_id', '$item_id', '$bid_price'");
         $result = $stmt->execute();
         $stmt->close();
         return $result;
@@ -523,7 +523,7 @@ class DbHandler {
         $stmt->close();
         
         if($result){
-            $bid_result = placeBid($user_id,$bid_price,$item_id);
+            $bid_result = placeBid($user_id,$bid_price,$item_id,$this);
             
             return $bid_result;
             
