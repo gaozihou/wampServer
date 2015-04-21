@@ -312,6 +312,24 @@ class DbHandler {
         }
     }
     
+    public function getEndedActiveTesk() {
+        $currentTime = time();
+        $stmt = $this->conn->prepare("SELECT t.* from tasks t WHERE t.end_time < '$currentTime' AND t.status = 0");
+        if ($stmt->execute()) {
+            $task = $stmt->get_result();
+            $stmt->close();
+            return $task;
+        } else {
+            return NULL;
+        }
+    }
+    
+    public function setBidFailed($task_id){
+        $stmt = $this->conn->prepare("UPDATE tasks t set t.status = 1 WHERE t.id = '$task_id'");
+        $stmt->execute();
+        $stmt->close();
+    }
+    
     public function getTargrtTasks($status, $category, $keywords, $order) {
         
         $prepare = "SELECT * from tasks WHERE id is not null";
@@ -496,7 +514,7 @@ class DbHandler {
     }
     
     public function updatePrice($user_id,$bid_price,$item_id){
-        $user_name = findUserName($user_id);
+        $user_name = DbHandler::findUserName($user_id, $this);
         if ($user_name == NULL){
             return FALSE;
         }
@@ -516,8 +534,8 @@ class DbHandler {
       
     }
     
-     public function findUserName($user_id){
-        $stmt = $this->conn->prepare("SELECT name FROM users WHERE id = '$user_id' ");
+    static public function findUserName($user_id, $that){
+        $stmt = $that->conn->prepare("SELECT name FROM users WHERE id = '$user_id' ");
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
