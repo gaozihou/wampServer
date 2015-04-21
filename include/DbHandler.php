@@ -325,7 +325,8 @@ class DbHandler {
     }
     
     public function setBidFinished($task_id){
-        $stmt = $this->conn->prepare("UPDATE tasks t set t.status = 1 WHERE t.id = '$task_id'");
+        $time = time();
+        $stmt = $this->conn->prepare("UPDATE tasks t set t.status = 1, t.end_time = '$time' WHERE t.id = '$task_id'");
         $stmt->execute();
         $stmt->close();
     }
