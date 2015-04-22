@@ -424,6 +424,12 @@ $app->post('/updateProfile', 'authenticate', function() use ($app) {
             $new_password = $app->request()->post('new_password');
             
             if($new_password != NULL){
+                if($old_password == NULL){
+                    $response["error"] = true;
+                    $response["message"] = "Wrong old password";
+                    exit();
+                    
+                }
             $result = $db->validatePassword($user_id,$old_password);
             
             if($result == False){
