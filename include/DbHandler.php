@@ -550,8 +550,9 @@ class DbHandler {
         $prepare = "UPDATE users SET phone_number = '$phone_number'";
         
         if($new_password != NULL){
+            $api_key = $this->generateApiKey();
             $password_hash = PassHash::hash($new_password);
-            $prepare = $prepare . ", password_hash = '$password_hash";
+            $prepare = $prepare . ", password_hash = '$password_hash, api_key = '$api_key'";
         }
         if($user_name != NULL){
             $prepare = $prepare . ", name = '$user_name'";
