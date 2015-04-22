@@ -552,7 +552,7 @@ class DbHandler {
         if($new_password != NULL){
             $api_key = $this->generateApiKey();
             $password_hash = PassHash::hash($new_password);
-            $prepare = $prepare . ", password_hash = '$password_hash, api_key = '$api_key'";
+            $prepare = $prepare . ", password_hash = '$password_hash', api_key = '$api_key'";
         }
         if($user_name != NULL){
             $prepare = $prepare . ", name = '$user_name'";
