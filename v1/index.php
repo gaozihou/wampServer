@@ -423,33 +423,56 @@ $app->post('/updateProfile', 'authenticate', function() use ($app) {
             $old_password = $app->request()->post('old_password');
             $new_password = $app->request()->post('new_password');
             
-            if($new_password != NULL){
-                if($old_password == NULL){
+            
+                if($old_password == NULL && $new_password != NULL){
                     $response["error"] = true;
                     $response["message"] = "Wrong old password";
-                    exit();
+                    echoRespnse(200, $response);
                     
                 }
-            $result = $db->validatePassword($user_id,$old_password);
+                else if($new_password != NULL && $old_password!=NULL){
+                    $result = $db->validatePassword($user_id,$old_password);
             
-            if($result == False){
-                $response["error"] = true;
-                $response["message"] = "Wrong old password";
-                exit();
-            }
-            }
-                    
-            $result=$db->updateProfile($user_id,$phone_number, $new_password,$user_name);
+                    if($result == False){
+                        $response["error"] = true;
+                        $response["message"] = "Wrong old password";
+                        echoRespnse(200, $response);
+                
+                     }
+                    else{
+                        $result=$db->updateProfile($user_id,$phone_number, $new_password,$user_name);
 
-            if ($result) {
-                $response["error"] = false;
-                $response["message"] = "Profile updated successfully";
-                echoRespnse(201, $response);
-            } else {
-                $response["error"] = true;
-                $response["message"] = "Failed to update. Please try again";
-                echoRespnse(200, $response);
-            }      
+                        if ($result) {
+                            $response["error"] = false;
+                            $response["message"] = "Profile updated successfully";
+                            echoRespnse(201, $response);
+                        } else {
+                            $response["error"] = true;
+                            $response["message"] = "Failed to update. Please try again";
+                            echoRespnse(200, $response);
+                        }      
+
+                      }
+            
+                 }
+                 
+                 else {
+                     $result=$db->updateProfile($user_id,$phone_number, $new_password,$user_name);
+
+                        if ($result) {
+                            $response["error"] = false;
+                            $response["message"] = "Profile updated successfully";
+                            echoRespnse(201, $response);
+                        } else {
+                            $response["error"] = true;
+                            $response["message"] = "Failed to update. Please try again";
+                            echoRespnse(200, $response);
+                        }      
+
+                     
+                 }
+                    
+            
             
 
         });
