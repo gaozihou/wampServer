@@ -570,7 +570,7 @@ class DbHandler {
     
     public function validatePassword($user_id,$password) {
         
-        $stmt = $this->conn->prepare("SELECT password_hash FROM users WHERE id = '$user_id");
+        $stmt = $this->conn->prepare("SELECT password_hash FROM users WHERE id = '$user_id'");
 
         $stmt->execute();
         $password_hash = null;
