@@ -411,6 +411,42 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             }
 
         });
+
+        
+$app->post('/updateProfile', 'authenticate', function() use ($app) {
+            global $user_id;
+            $response = array();
+            $db = new DbHandler();
+            
+            $user_name = $app->request()->post('user_name');
+            $phone_number = $app->request()->post('phone_number');
+            $old_password = $app->request()->post('old_password');
+            $new_password = $app->request()->post('new_password');
+            
+            if($new_password != NULL){
+            $result = validatePassword($user_id,$old_password);
+            
+            if($result == False){
+                $response["error"] = true;
+                $response["message"] = "Wrong old password";
+                exit();
+            }
+            }
+                    
+            $result=$db->updateProfile($user_id,$phone_number, $new_password,$user_name);
+
+            if ($result) {
+                $response["error"] = false;
+                $response["message"] = "Profile updated successfully";
+                echoRespnse(201, $response);
+            } else {
+                $response["error"] = true;
+                $response["message"] = "Failed to update. Please try again";
+                echoRespnse(200, $response);
+            }      
+            
+
+        });
         
 $app->get('/getPortrait', 'authenticate', function() {
             global $user_id;

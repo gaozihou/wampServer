@@ -545,6 +545,62 @@ class DbHandler {
         return $result;
       
     }
+    public function updateProfile($user_id,$phone_number, $new_password,$user_name){
+              
+        $prepare = "UPDATE users SET phone_number = '$phone_number'";
+        
+        if($new_password != NULL){
+            $password_hash = PassHash::hash($new_password);
+            $prepare = $prepare . ", password_hash = '$password_hash";
+        }
+        if($user_name != NULL){
+            $prepare = $prepare . ", name = '$user_name'";
+        }
+        
+        $prepare = $prepare . " WHERE id = '$user_id'";
+        
+        $stmt = $this->conn->prepare($prepare);
+         
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+        
+ 
+    
+    public function validatePassword($user_id,$password) {
+        
+        $stmt = $this->conn->prepare("SELECT password_hash FROM users WHERE id = '$user_id");
+
+        $stmt->execute();
+        $password_hash = null;
+        $stmt->bind_result($password_hash);
+
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            // Found user with the email
+            // Now verify the password
+
+            $stmt->fetch();
+
+            $stmt->close();
+
+            if (PassHash::check_password($password_hash, $password)) {
+                // User password is correct
+                return TRUE;
+            } else {
+                // user password is incorrect
+                return FALSE;
+            }
+        } else {
+            $stmt->close();
+
+            // user not existed with the email
+            return FALSE;
+        }
+        
+    }
     
     public function validateBuyer($user_id,$item_id){
         $stmt = $this->conn->prepare("SELECT user_id FROM tasks WHERE id = '$item_id'");
