@@ -4,6 +4,7 @@
  * For further instruction please visit: 
  * http://www.binarytides.com/php-socket-programming-tutorial/ */
 
+echo "Hello World \n";
 
 error_reporting(~E_NOTICE);
 set_time_limit (0);
@@ -56,6 +57,8 @@ $startTime = time();
 //start loop to listen for incoming connections and process existing connections
 while (true)
 {
+	
+	
 	if((time()-$startTime) >= $kill_time) break;
 	
     //prepare array of readable client sockets
@@ -72,7 +75,7 @@ while (true)
             $read[$i+1] = $client_socks[$i];
         }
     }
-     
+    
     //now call select - blocking call
     if(socket_select($read , $write , $except , null) === false)
     {
@@ -81,7 +84,7 @@ while (true)
      
         die("Could not listen on socket : [$errorcode] $errormsg \n");
     }
-     
+
     //if ready contains the master socket, then a new connection has come in
     if (in_array($sock, $read)) 
     {
