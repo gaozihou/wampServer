@@ -649,7 +649,7 @@ $app->post('/postItem', 'authenticate', function() use ($app) {
             // creating new task
             $task_id = $db->postItem($user_id, $name, $description, $condition_name,
                     $category_name, $time_limit, $direct_buy_price, $current_price, 
-                    $image_file_name, $user_name);
+                    $image_file_name, $user_name, 0);
 
             if ($task_id != NULL) {
                 $response["error"] = false;
