@@ -525,7 +525,7 @@ class DbHandler {
         $stmt->close();
         $tmp = $user->fetch_assoc();
         $user_name = $tmp["name"];
-        $stmt = $that->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price, user_name, date) VALUES ('$user_id', '$item_id', '$bid_price', '$user_name','$date')");
+        $stmt = $that->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price, user_name, time) VALUES ('$user_id', '$item_id', '$bid_price', '$user_name','$date')");
         $result = $stmt->execute();
         $stmt->close();
         return $result;

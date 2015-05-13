@@ -269,7 +269,7 @@ $app->post('/getSingleItem',function() use($app){
                 $tmp["buyerName"] = $task["buyer_name"];
                 $tmp["buyerID"] = $task["buyer_id"];
                 $tmp["timeLeft"] = $task["end_time"] - time();
-                $tmp["buyList"] = $tempBuyList;
+                $tmp["buyList"] = json_encode($tempBuyList);
                 array_push($response["tasks"], $tmp);
             }
               
