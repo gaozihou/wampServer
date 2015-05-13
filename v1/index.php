@@ -240,6 +240,11 @@ $app->post('/getSingleItem',function() use($app){
             // fetching all user tasks
             $result = $db->getSingleItem($task_id);
             $buy_list = $db->getSpecificUserBuy($task_id);
+            
+            $tempBuyList = array();
+            while($tmpUser = $buy_list -> fetch_assoc()){
+                $tempBuyList[] = $tmpUser;
+            }
 
             // looping through result and preparing tasks array
             $response["error"] = false;
@@ -264,7 +269,7 @@ $app->post('/getSingleItem',function() use($app){
                 $tmp["buyerName"] = $task["buyer_name"];
                 $tmp["buyerID"] = $task["buyer_id"];
                 $tmp["timeLeft"] = $task["end_time"] - time();
-                $tmp["buyList"] = $buy_list;
+                $tmp["buyList"] = $tempBuyList;
                 array_push($response["tasks"], $tmp);
             }
               
