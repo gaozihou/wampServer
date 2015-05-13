@@ -312,7 +312,7 @@ class DbHandler {
         }
     }
     
-    public function getEndedActiveTesk() {
+    public function getEndedActiveTask() {
         $currentTime = time();
         $stmt = $this->conn->prepare("SELECT t.* from tasks t WHERE t.end_time < '$currentTime' AND t.status = 0");
         if ($stmt->execute()) {
