@@ -271,15 +271,6 @@ $app->post('/getSingleItem',function() use($app){
             echoRespnse(200, $response);
     
 });
-        
-//This is only for testing!!!
-$app->post('/pushMessages', function() use ($app) {
-            
-            $googleResult = pushMessageToAllUsers("This is the new way to post the notification. OH MY GOD WHY THERE IS STILL BUG HERE!");
-            // echo json response
-            echoRespnse(201, $googleResult);
-                
-        });
 
 /**
  * User Login
@@ -419,6 +410,20 @@ $app->post('/directBuy', 'authenticate', function() use ($app) {
                 $response["error"] = false;
                 $response["message"] = "Item bought successfully";
                 echoRespnse(201, $response);
+                
+               $items= $db->getSingleItem($item_id);
+               $tmp = $items->fetch_assoc();
+               pushMessageToSpecifiedUsers("Your item: ".$tmp["name"]." successhully sold with price of ".$tmp["current_price"],
+							array($tmp['user_id']=>true, ));
+					$usersRelated = $db ->getSpecificUserBuy($item_id);
+					$user_list = array();
+					while($tmpUser = $usersRelated -> fetch_assoc()){
+						$user_list[$tmpUser["user_id"]] = true;
+					}
+				pushMessageToSpecifiedUsers("Item: ".$tmp["name"]." is sold out to buyer ".$tmp["buyer_name"]." with price of ".$tmp["current_price"],
+							 $user_list);
+                
+                
             } else {
                 $response["error"] = true;
                 $response["message"] = "Failed to buy the item. Please try again";
@@ -452,6 +457,21 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
                 $response["error"] = false;
                 $response["message"] = "Item bidded successfully";
                 echoRespnse(201, $response);
+                
+                $items= $db->getSingleItem($item_id);
+                $tmp = $items->fetch_assoc();
+                pushMessageToSpecifiedUsers("Your item: ".$tmp["name"]." gets a bid of ".$tmp["current_price"],
+                		array($tmp['user_id']=>true, ));
+                $usersRelated = $db ->getSpecificUserBuy($item_id);
+                $user_list = array();
+                while($tmpUser = $usersRelated -> fetch_assoc()){
+                	if($tmpUser["user_id"] != $user_id){
+                		$user_list[$tmpUser["user_id"]] = true;
+                	}
+                }
+                pushMessageToSpecifiedUsers($tmp['user_name']." bid ".$tmp['current_price']." for item ".$tmp['name'],
+                		$user_list);
+                
             } else {
                 $response["error"] = true;
                 $response["message"] = "Failed to place bid. Please try again";
@@ -826,50 +846,55 @@ function echoRespnse($status_code, $response) {
 
 $app->run();
 
-function pushMessageToAllUsers($rawMessage){
-            $message = $rawMessage;
-            $messageToSend = array("Notice" => $message);
-            $registration_ids = array();
-     
-            $db = new DbHandler();
-            $result = $db->getAllGCMIds();     
-            while($row = $result->fetch_assoc()){
-                array_push($registration_ids, $row['registration_id']);
-            }
-            // Set POST variables
-            $url = 'https://android.googleapis.com/gcm/send';
-   
-            $fields = array(
-                'registration_ids' => $registration_ids,
-                'data' => $messageToSend,
-            );
-            $headers = array(
-                'Authorization: key=AIzaSyDdZD8LfeHc3qRHTwgJnXH1ccD4WqiKtNM',
-                'Content-Type: application/json'
-            );
-            
-            // Open connection
-             $ch = curl_init();
-   
-            // Set the url, number of POST vars, POST data
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-   
-            // Disabling SSL Certificate support temporarly
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-   
-            // Execute post
-            $googleResult = curl_exec($ch);
-            if ($googleResult === FALSE) {
-                die('Curl failed: ' . curl_error($ch));
-            }
-   
-            // Close connection
-            curl_close($ch);
-            return $googleResult;
-}
+
+function pushMessageToSpecifiedUsers($rawMessage, $user_ids){
+   		
+   		$message = $rawMessage;
+   		$messageToSend = array("Notice" => $message);
+   		$registration_ids = array();
+   		 
+   		$db = new DbHandler();
+   		$result = $db->getAllGCMIds();
+   		while($row = $result->fetch_assoc()){
+   			if(isset($user_ids[$row['user_id']])){
+   				array_push($registration_ids, $row['registration_id']);
+   			}
+   		}
+   		// Set POST variables
+   		$url = 'https://android.googleapis.com/gcm/send';
+   		 
+   		$fields = array(
+   				'registration_ids' => $registration_ids,
+   				'data' => $messageToSend,
+   		);
+   		$headers = array(
+   				'Authorization: key=AIzaSyDdZD8LfeHc3qRHTwgJnXH1ccD4WqiKtNM',
+   				'Content-Type: application/json'
+   		);
+   	
+   		// Open connection
+   		$ch = curl_init();
+   		 
+   		// Set the url, number of POST vars, POST data
+   		curl_setopt($ch, CURLOPT_URL, $url);
+   		curl_setopt($ch, CURLOPT_POST, true);
+   		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+   		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+   		 
+   		// Disabling SSL Certificate support temporarly
+   		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+   		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+   		 
+   		// Execute post
+   		$googleResult = curl_exec($ch);
+   		if ($googleResult === FALSE) {
+   			die('Curl failed: ' . curl_error($ch));
+   		}
+   		 
+   		// Close connection
+   		curl_close($ch);
+   		
+   		return $googleResult;
+   	}
 
 
