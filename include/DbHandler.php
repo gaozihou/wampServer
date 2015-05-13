@@ -518,7 +518,14 @@ class DbHandler {
     }
        
     static public function placeBid($user_id,$bid_price,$item_id,$that){
-        $stmt = $that->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price) VALUES ('$user_id', '$item_id', '$bid_price')");
+        $date = date('Y-m-d H:i:s');
+        $stmt = $that->conn->prepare("SELECT * FROM users WHERE id = '$user_id'");
+        $stmt->execute();
+        $user= $stmt->get_result();
+        $stmt->close();
+        $tmp = $user->fetch_assoc();
+        $user_name = $tmp["name"];
+        $stmt = $that->conn->prepare("INSERT INTO user_buy (user_id, task_id, bid_price, user_name, date) VALUES ('$user_id', '$item_id', '$bid_price', '$user_name','$date')");
         $result = $stmt->execute();
         $stmt->close();
         return $result;
