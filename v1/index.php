@@ -452,6 +452,7 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             if(!$db->validateBuyer($user_id,$item_id)){
                 $response["error"] = true;
                 $response["message"] = "You can't buy item posted by yourself!";
+                
                 echoRespnse(200, $response);
                 
             }
@@ -463,6 +464,7 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             if ($result) {
                 $response["error"] = false;
                 $response["message"] = "Item bidded successfully";
+                $response["time"] = date('Y-m-d H:i:s');               
                 echoRespnse(201, $response);
                 
                 $items= $db->getSingleItem($item_id);
