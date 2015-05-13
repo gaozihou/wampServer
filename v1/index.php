@@ -469,7 +469,7 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
                 		$user_list[$tmpUser["user_id"]] = true;
                 	}
                 }
-                pushMessageToSpecifiedUsers($tmp['user_name']." bid ".$tmp['current_price']." for item ".$tmp['name'],
+                pushMessageToSpecifiedUsers($tmp['buyer_name']." bid ".$tmp['current_price']." for item ".$tmp['name'],
                 		$user_list);
                 
             } else {
