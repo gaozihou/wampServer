@@ -242,16 +242,16 @@ class DbHandler {
      */
     public function postItem($user_id, $name, $description, $condition_name,
                     $category_name, $time_limit, $direct_buy_price, $current_price, 
-                    $image_file_name, $user_name) {
+                    $image_file_name, $user_name, $status) {
         
         //For calculating the create time and end time
         $now_time = time();
         $end_time = $now_time + (int)$time_limit;
         
         $stmt = $this->conn->prepare("INSERT INTO tasks(name, description, condition_name, category_name, time_limit, "
-                . "direct_buy_price, current_price, image_file_name, user_name, user_id, create_time, end_time) VALUES ('$name', '$description', '$condition_name', "
+                . "direct_buy_price, current_price, image_file_name, user_name, user_id, create_time, end_time, status) VALUES ('$name', '$description', '$condition_name', "
                 . "'$category_name', '$time_limit', '$direct_buy_price', '$current_price', "
-                . "'$image_file_name', '$user_name', '$user_id', '$now_time', '$end_time')");
+                . "'$image_file_name', '$user_name', '$user_id', '$now_time', '$end_time', '$status')");
         $result = $stmt->execute();
         $stmt->close();
 
@@ -312,7 +312,7 @@ class DbHandler {
         }
     }
     
-    public function getEndedActiveTesk() {
+    public function getEndedActiveTask() {
         $currentTime = time();
         $stmt = $this->conn->prepare("SELECT t.* from tasks t WHERE t.end_time < '$currentTime' AND t.status = 0");
         if ($stmt->execute()) {

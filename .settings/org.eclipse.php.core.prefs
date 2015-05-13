@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 include_path=0;/wampServer
+=======
+include_path=0;/task_manager
+>>>>>>> 071cfc4f87230b5a78cda41a2614b2c947954050

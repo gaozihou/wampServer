@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Xutong/Documents/NetBeansProjects/wampServer/include/TCP.php</file>
             <file>file:/C:/Users/Xutong/Documents/NetBeansProjects/wampServer/include/PassHash.php</file>
             <file>file:/C:/Users/Xutong/Documents/NetBeansProjects/wampServer/include/DbHandler.php</file>
             <file>file:/C:/Users/Xutong/Documents/NetBeansProjects/wampServer/v1/index.php</file>
+=======
+            <file>file:/var/www/task_manager/v1/index.php</file>
+            <file>file:/var/www/task_manager/include/DbHandler.php</file>
+>>>>>>> 071cfc4f87230b5a78cda41a2614b2c947954050
         </group>
     </open-files>
 </project-private>
