@@ -462,13 +462,15 @@ $app->post('/placeBid', 'authenticate', function() use ($app) {
             $result = $db->updatePrice($user_id,$bid_price,$item_id);
 
             if ($result) {
+            	$items= $db->getSingleItem($item_id);
+            	$tmp = $items->fetch_assoc();
+            	
                 $response["error"] = false;
                 $response["message"] = "Item bidded successfully";
-                $response["time"] = date('Y-m-d H:i:s');               
+                $response["time"] = date('Y-m-d H:i:s');        
+                $response['user_name'] = $tmp['buyer_name'];
                 echoRespnse(201, $response);
-                
-                $items= $db->getSingleItem($item_id);
-                $tmp = $items->fetch_assoc();
+                           
                 pushMessageToSpecifiedUsers("Your item: ".$tmp["name"]." gets a bid of ".$tmp["current_price"],
                 		array($tmp['user_id']=>true, ));
                 $usersRelated = $db ->getSpecificUserBuy($item_id);
