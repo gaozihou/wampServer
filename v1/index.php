@@ -1,13 +1,12 @@
 
-# COMP4521
-# ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
-# GAO Zihou          20090130    zgao@connect.ust.hk
-
 <?php
+
+// COMP4521
+// ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
+// GAO Zihou          20090130    zgao@connect.ust.hk
 
 require_once '../include/DbHandler.php';
 require_once '../include/PassHash.php';
-require_once '../include/email.class.php';
 require '.././libs/Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -115,7 +114,6 @@ $app->post('/register', function() use ($app) {
 
             $response["error"] = false;
             $response["tasks"] = array();
-            require_once "../include/email.class.php";
             // looping through result and preparing tasks array
             while ($task = $result->fetch_assoc()) {
                 $tmp = array();
@@ -354,34 +352,6 @@ $app->get('/serverTest', function() {
 			$response["message"] = "Request Done";
 			echoRespnse(200, $response);
 		});
-
-
-	$app->get('/sendEmail', function() {
-		
-	
-	//******************** 配置信息 ********************************
-	$smtpserver = "smtp.sina.com";//SMTP服务器
-	$smtpserverport =465;//SMTP服务器端口
-	$smtpusermail = "gaozihou@sina.com";//SMTP服务器的用户邮箱
-	$smtpemailto = "gaozihou1@gmail.com";//发送给谁
-	$smtpuser = "gaozihou@sina.com";//SMTP服务器的用户帐号
-	$smtppass = "465938";//SMTP服务器的用户密码
-	$mailtitle = "Hello World";//邮件主题
-	$mailcontent = "<h1>"."HEHEHEHEHEHE"."</h1>";//邮件内容
-	$mailtype = "HTML";//邮件格式（HTML/TXT）,TXT为文本邮件
-	//************************ 配置信息 ****************************
-	$smtp = new smtp($smtpserver,$smtpserverport,true,$smtpuser,$smtppass);//这里面的一个true是表示使用身份验证,否则不使用身份验证.
-	$smtp->debug = true;//是否显示发送的调试信息
-	$state = $smtp->sendmail($smtpemailto, $smtpusermail, $mailtitle, $mailcontent, $mailtype);
-	$result = NULL;
-	//$state = "";
-		$result = true;
-		
-		$response = array();
-		$response["error"] = false;
-		$response["message"] = $result;
-		echoRespnse(200, $response);
-	});
 	
              
 $app->get('/logout', 'authenticate', function() {

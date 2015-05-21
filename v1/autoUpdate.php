@@ -1,8 +1,10 @@
-# COMP4521
-# ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
-# GAO Zihou          20090130    zgao@connect.ust.hk
+
 
 <?php
+
+// COMP4521
+// ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
+// GAO Zihou          20090130    zgao@connect.ust.hk
 
 require_once 'C:\wamp\www\task_manager\include\DbHandler.php';
  
