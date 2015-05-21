@@ -1,12 +1,9 @@
+# COMP4521
+# ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
+# GAO Zihou          20090130    zgao@connect.ust.hk
+
 <?php
 
-/**
- * Class to handle all db operations
- * This class will have CRUD methods for database tables
- *
- * @author Ravi Tamada
- * @link URL Tutorial link
- */
 class DbHandler {
 
     private $conn;

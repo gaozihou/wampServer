@@ -1,12 +1,10 @@
 
+# COMP4521
+# ZHOU Xutong    20091184    xzhouaf@connect.ust.hk
+# GAO Zihou          20090130    zgao@connect.ust.hk
+
 <?php
 
-/**
- * Handling database connection
- *
- * @author Ravi Tamada
- * @link URL Tutorial link
- */
 class DbConnect {
 
     private $conn;
